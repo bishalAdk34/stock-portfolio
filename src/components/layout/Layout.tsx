@@ -32,7 +32,6 @@ interface LayoutProps {
 const menuItems = [
     { text: 'Dashboard', icon: <DashboardIcon />, path: '/' },
     { text: 'Portfolio', icon: <PortfolioIcon />, path: '/portfolio' },
-    { text: 'Analytics', icon: <TrendingUpIcon />, path: '/analytics' },
 ];
 
 export const Layout: React.FC<LayoutProps> = ({ children }) => {
