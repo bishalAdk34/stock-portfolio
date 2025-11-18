@@ -1,73 +1,108 @@
-# React + TypeScript + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# Stock Portfolio App
 
-Currently, two official plugins are available:
+A modern React-based stock portfolio management application with interactive charts, CRUD operations, and real-time portfolio tracking.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Features
 
-## React Compiler
+### 📊 Data Visualization
+- **Line Chart**: Stock price trends over 30 days using Highcharts
+- **Column Chart**: Trading volume and daily gain/loss analysis
+- Interactive tooltips and smooth animations
+- Responsive design for all screen sizes
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### 💼 Portfolio Management
+- View all stocks in a sortable, filterable table
+- Display comprehensive stock metrics (ticker, company, quantity, prices, gains/losses)
+- Global search functionality (search by ticker or company name)
+- Column-based sorting (ascending/descending)
 
-## Expanding the ESLint configuration
+### ➕ Add/Edit/Delete Operations
+- Add new stocks via modal form
+- Edit existing stocks with pre-filled data
+- Delete stocks with confirmation dialog
+- Form validation using React Hook Form + Zod
+- Real-time UI updates (optimistic updates)
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### 💾 Data Persistence
+- Automatic localStorage persistence
+- Zustand state management
+- Portfolio data persists across browser sessions
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### 🎨 Responsive Design
+- Mobile-first approach
+- Responsive drawer navigation (hamburger menu on mobile)
+- Adaptive layout for all screen sizes
+- Material-UI styling
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## Tech Stack
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Frontend
+- **React 19** - UI library
+- **TypeScript** - Type safety
+- **Vite** - Build tool & dev server
+
+### State Management & Data
+- **Zustand** - State management with localStorage persistence
+- **TanStack Query** - Data fetching and caching
+- **TanStack Table** - Advanced table functionality
+
+### UI & Styling
+- **Material-UI (MUI) v7** - Component library
+- **Emotion** - CSS-in-JS styling
+
+### Forms & Validation
+- **React Hook Form** - Form state management
+- **Zod** - Schema validation
+
+### Charts
+- **Highcharts** - Professional charting library
+- **highcharts-react-official** - React wrapper
+
+### Routing
+- **React Router v7** - Client-side routing
+
+## Prerequisites
+
+Before running the application, ensure you have:
+- **Node.js** (v16 or higher)
+- **npm** or **yarn** package manager
+
+Check your versions:
+```bash
+node --version
+npm --version
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Installation
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+1. **Clone the repository**
+```bash
+git clone https://github.com/bishalAdk34/stock-portfolio.git
+cd stock-portfolio-app
 ```
+
+2. **Install dependencies**
+```bash
+npm install
+```
+
+## Running the Application
+
+### Development Server
+
+Start the development server with hot module replacement:
+
+```bash
+npm run dev
+```
+
+The application will be available at:
+- Local: `http://localhost:5173/` (or next available port)
+- Network: Check terminal output for your machine's IP
+
+
+
+
+
+
