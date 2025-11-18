@@ -7,7 +7,6 @@ import { theme } from './theme/theme';
 import { Layout } from './components/layout/Layout';
 import { Dashboard } from './pages/Dashboard';
 import { Portfolio } from './pages/Portfolio';
-import { Analytics } from './pages/Analytics';
 
 function App() {
   return (
@@ -18,7 +17,6 @@ function App() {
           <Routes>
             <Route path="/" element={<Dashboard />} />
             <Route path="/portfolio" element={<Portfolio />} />
-            <Route path="/analytics" element={<Analytics />} />
           </Routes>
         </Layout>
       </BrowserRouter>
