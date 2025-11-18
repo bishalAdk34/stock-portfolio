@@ -2,10 +2,16 @@
 import { Box, Typography, Grid, Card, CardContent, Paper } from '@mui/material';
 import { TrendingUp, TrendingDown, AccountBalance, ShowChart } from '@mui/icons-material';
 import { usePortfolioStore } from '../store/portfolioStore';
+import { StockPriceChart } from '../components/charts/StockPriceChart';
+import { VolumeChart } from '../components/charts/VolumeChart';
+import { generateStockPriceTrend, generateVolumeTradedData } from '../services/portfolioChartService';
 
 export const Dashboard: React.FC = () => {
     const { stocks, getPortfolioSummary } = usePortfolioStore();
     const summary = getPortfolioSummary();
+
+    const priceData = generateStockPriceTrend(stocks);
+    const volumeData = generateVolumeTradedData(stocks);
 
     const statCards = [
         {
@@ -50,7 +56,7 @@ export const Dashboard: React.FC = () => {
             {/* Stats Cards */}
             <Grid container spacing={3} sx={{ mb: 4 }}>
                 {statCards.map((stat, index) => (
-                    <Grid xs={12} sm={6} md={3} key={index}>
+                    <Grid size={{ xs: 12, sm: 6, md: 3 }} key={index}>
                         <Card>
                             <CardContent>
                                 <Box display="flex" justifyContent="space-between" alignItems="center">
@@ -72,42 +78,50 @@ export const Dashboard: React.FC = () => {
                 ))}
             </Grid>
 
-            {/* Placeholder for Charts */}
+            {/* Charts Section */}
             <Grid container spacing={3}>
-                <Grid  xs={12} md={8}>
+                <Grid size={{ xs: 12, md: 8 }}>
                     <Paper sx={{ p: 3, height: 400 }}>
                         <Typography variant="h6" gutterBottom>
                             Stock Price Trends
                         </Typography>
-                        <Box
-                            sx={{
-                                height: '100%',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                color: 'text.secondary',
-                            }}
-                        >
-                            <Typography>Line chart will be implemented in next commit</Typography>
-                        </Box>
+                        {stocks.length === 0 ? (
+                            <Box
+                                sx={{
+                                    height: '100%',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    color: 'text.secondary',
+                                }}
+                            >
+                                <Typography>Add stocks to see price trends</Typography>
+                            </Box>
+                        ) : (
+                            <StockPriceChart data={priceData} />
+                        )}
                     </Paper>
                 </Grid>
-                <Grid xs={12} md={4}>
+                <Grid size={{ xs: 12, md: 4 }}>
                     <Paper sx={{ p: 3, height: 400 }}>
                         <Typography variant="h6" gutterBottom>
                             Volume Analysis
                         </Typography>
-                        <Box
-                            sx={{
-                                height: '100%',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                color: 'text.secondary',
-                            }}
-                        >
-                            <Typography>Column chart will be implemented in next commit</Typography>
-                        </Box>
+                        {stocks.length === 0 ? (
+                            <Box
+                                sx={{
+                                    height: '100%',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    color: 'text.secondary',
+                                }}
+                            >
+                                <Typography>Add stocks to see volume data</Typography>
+                            </Box>
+                        ) : (
+                            <VolumeChart data={volumeData} />
+                        )}
                     </Paper>
                 </Grid>
             </Grid>

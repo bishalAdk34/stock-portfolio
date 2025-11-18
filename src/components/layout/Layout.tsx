@@ -19,7 +19,6 @@ import {
     Menu as MenuIcon,
     Dashboard as DashboardIcon,
     AccountBalance as PortfolioIcon,
-    TrendingUp as TrendingUpIcon,
 } from '@mui/icons-material';
 import { useNavigate, useLocation } from 'react-router-dom';
 

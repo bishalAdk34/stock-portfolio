@@ -1,37 +1,12 @@
-import { useEffect, useRef } from 'react';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
-import { Box, CircularProgress, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 
 interface VolumeChartProps {
-    data: { date: string; volume: number; gainLoss: number }[];
-    isLoading?: boolean;
+    data: Array<{ date: string; volume: number; gainLossPercentage: number }>;
 }
 
-export const VolumeChart: React.FC<VolumeChartProps> = ({ data, isLoading }) => {
-    const chartRef = useRef<HighchartsReact.RefObject>(null);
-
-    useEffect(() => {
-        // Update chart when data changes
-        if (chartRef.current && data.length > 0) {
-            chartRef.current.chart.reflow();
-        }
-    }, [data]);
-
-    if (isLoading) {
-        return (
-            <Box
-                sx={{
-                    height: 350,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                }}
-            >
-                <CircularProgress />
-            </Box>
-        );
-    }
+export const VolumeChart: React.FC<VolumeChartProps> = ({ data }) => {
 
     if (!data || data.length === 0) {
         return (
@@ -93,7 +68,7 @@ export const VolumeChart: React.FC<VolumeChartProps> = ({ data, isLoading }) => 
             {
                 type: 'line',
                 name: 'Gain/Loss %',
-                data: data.map(item => item.gainLoss),
+                data: data.map(item => item.gainLossPercentage),
                 color: '#ff9800',
                 yAxis: 1,
                 marker: {
@@ -156,7 +131,6 @@ export const VolumeChart: React.FC<VolumeChartProps> = ({ data, isLoading }) => 
             <HighchartsReact
                 highcharts={Highcharts}
                 options={options}
-                ref={chartRef}
             />
         </Box>
     );
