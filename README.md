@@ -1,4 +1,3 @@
-
 # Stock Portfolio App
 
 A modern React-based stock portfolio management application with interactive charts, CRUD operations, and real-time portfolio tracking.
@@ -100,6 +99,22 @@ npm run dev
 The application will be available at:
 - Local: `http://localhost:5173/` (or next available port)
 - Network: Check terminal output for your machine's IP
+
+## Testing
+
+This project uses **Vitest** and **React Testing Library** for unit and component tests.
+
+### Run all tests
+```bash
+npm test
+```
+
+### Example test coverage
+- Component rendering (Dashboard, Portfolio, etc.)
+- Zustand store logic (add/edit/delete stock)
+- Zod schema validation (form validation)
+
+Test files are in `src/__tests__/`.
 
 
 
