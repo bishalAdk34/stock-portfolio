@@ -23,6 +23,11 @@ import {
     Typography,
     TextField,
     InputAdornment,
+    FormControl,
+    InputLabel,
+    Select,
+    MenuItem,
+    Grid,
 } from '@mui/material';
 import {
     Edit as EditIcon,
@@ -30,6 +35,7 @@ import {
     ArrowUpward,
     ArrowDownward,
     Search as SearchIcon,
+    FilterList as FilterIcon,
 } from '@mui/icons-material';
 import { useState } from 'react';
 import type { Stock } from '../../types/stock.types';
@@ -50,6 +56,8 @@ export const PortfolioTable: React.FC<PortfolioTableProps> = ({
     const [sorting, setSorting] = useState<SortingState>([]);
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
     const [globalFilter, setGlobalFilter] = useState('');
+    const [performanceFilter, setPerformanceFilter] = useState<string>('all');
+    const [dateRangeFilter, setDateRangeFilter] = useState<string>('all');
 
     const columns = useMemo(
         () => [
@@ -164,8 +172,42 @@ export const PortfolioTable: React.FC<PortfolioTableProps> = ({
         [onEdit, onDelete]
     );
 
+    // Filter stocks based on performance and date range
+    const filteredStocks = useMemo(() => {
+        let filtered = [...stocks];
+
+        // Performance filter
+        if (performanceFilter !== 'all') {
+            filtered = filtered.filter((stock) => {
+                const gainLoss = (stock.quantity * stock.currentPrice) - (stock.quantity * stock.purchasePrice);
+                if (performanceFilter === 'gainers') return gainLoss > 0;
+                if (performanceFilter === 'losers') return gainLoss < 0;
+                if (performanceFilter === 'neutral') return gainLoss === 0;
+                return true;
+            });
+        }
+
+        // Date range filter
+        if (dateRangeFilter !== 'all') {
+            const today = new Date();
+            filtered = filtered.filter((stock) => {
+                const purchaseDate = new Date(stock.dateOfPurchase);
+                const diffTime = today.getTime() - purchaseDate.getTime();
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+                if (dateRangeFilter === 'week') return diffDays <= 7;
+                if (dateRangeFilter === 'month') return diffDays <= 30;
+                if (dateRangeFilter === 'quarter') return diffDays <= 90;
+                if (dateRangeFilter === 'year') return diffDays <= 365;
+                return true;
+            });
+        }
+
+        return filtered;
+    }, [stocks, performanceFilter, dateRangeFilter]);
+
     const table = useReactTable({
-        data: stocks,
+        data: filteredStocks,
         columns,
         state: {
             sorting,
@@ -182,21 +224,67 @@ export const PortfolioTable: React.FC<PortfolioTableProps> = ({
 
     return (
         <Box>
+            {/* Search and Filter Controls */}
             <Box sx={{ mb: 3 }}>
-                <TextField
-                    fullWidth
-                    variant="outlined"
-                    placeholder="Search by ticker or company name..."
-                    value={globalFilter}
-                    onChange={(e) => setGlobalFilter(e.target.value)}
-                    InputProps={{
-                        startAdornment: (
-                            <InputAdornment position="start">
-                                <SearchIcon />
-                            </InputAdornment>
-                        ),
-                    }}
-                />
+                <Grid container spacing={2}>
+                    <Grid size={{ xs: 12, md: 6 }}>
+                        <TextField
+                            fullWidth
+                            variant="outlined"
+                            placeholder="Search by ticker or company name..."
+                            value={globalFilter}
+                            onChange={(e) => setGlobalFilter(e.target.value)}
+                            InputProps={{
+                                startAdornment: (
+                                    <InputAdornment position="start">
+                                        <SearchIcon />
+                                    </InputAdornment>
+                                ),
+                            }}
+                        />
+                    </Grid>
+                    <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+                        <FormControl fullWidth>
+                            <InputLabel>Performance</InputLabel>
+                            <Select
+                                value={performanceFilter}
+                                label="Performance"
+                                onChange={(e) => setPerformanceFilter(e.target.value)}
+                                startAdornment={
+                                    <InputAdornment position="start">
+                                        <FilterIcon />
+                                    </InputAdornment>
+                                }
+                            >
+                                <MenuItem value="all">All Stocks</MenuItem>
+                                <MenuItem value="gainers">Gainers Only</MenuItem>
+                                <MenuItem value="losers">Losers Only</MenuItem>
+                                <MenuItem value="neutral">No Change</MenuItem>
+                            </Select>
+                        </FormControl>
+                    </Grid>
+                    <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+                        <FormControl fullWidth>
+                            <InputLabel>Purchase Date</InputLabel>
+                            <Select
+                                value={dateRangeFilter}
+                                label="Purchase Date"
+                                onChange={(e) => setDateRangeFilter(e.target.value)}
+                                startAdornment={
+                                    <InputAdornment position="start">
+                                        <FilterIcon />
+                                    </InputAdornment>
+                                }
+                            >
+                                <MenuItem value="all">All Time</MenuItem>
+                                <MenuItem value="week">Last 7 Days</MenuItem>
+                                <MenuItem value="month">Last 30 Days</MenuItem>
+                                <MenuItem value="quarter">Last 90 Days</MenuItem>
+                                <MenuItem value="year">Last Year</MenuItem>
+                            </Select>
+                        </FormControl>
+                    </Grid>
+                </Grid>
             </Box>
 
             <TableContainer component={Paper}>

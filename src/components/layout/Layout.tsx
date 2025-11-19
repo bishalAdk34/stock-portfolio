@@ -94,6 +94,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
                 sx={{
                     width: { md: desktopOpen ? `calc(100% - ${DRAWER_WIDTH}px)` : '100%' },
                     ml: { md: desktopOpen ? `${DRAWER_WIDTH}px` : 0 },
+                    transition: 'all 0.3s ease-in-out',
                 }}
             >
                 <Toolbar>
@@ -153,6 +154,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
                     ml: { md: desktopOpen ? `${DRAWER_WIDTH}px` : 0 },
                     minHeight: '100vh',
                     bgcolor: 'background.default',
+                    transition: 'all 0.3s ease-in-out',
                 }}
             >
                 <Toolbar /> 

@@ -53,11 +53,10 @@ export const Dashboard: React.FC = () => {
                 Welcome to your stock portfolio management system
             </Typography>
 
-            {/* Stats Cards */}
             <Grid container spacing={3} sx={{ mb: 4 }}>
                 {statCards.map((stat, index) => (
                     <Grid size={{ xs: 12, sm: 6, md: 3 }} key={index}>
-                        <Card>
+                        <Card sx={{ height: 120 }}>
                             <CardContent>
                                 <Box display="flex" justifyContent="space-between" alignItems="center">
                                     <Box>
@@ -68,7 +67,7 @@ export const Dashboard: React.FC = () => {
                                             {stat.value}
                                         </Typography>
                                     </Box>
-                                    <Box sx={{ color: stat.color }}>
+                                    <Box sx={{ color: stat.color, ml: 2 }}>
                                         {stat.icon}
                                     </Box>
                                 </Box>
@@ -78,7 +77,6 @@ export const Dashboard: React.FC = () => {
                 ))}
             </Grid>
 
-            {/* Charts Section */}
             <Grid container spacing={3}>
                 <Grid size={{ xs: 12, md: 8 }}>
                     <Paper sx={{ p: 3, height: 400 }}>
@@ -126,7 +124,6 @@ export const Dashboard: React.FC = () => {
                 </Grid>
             </Grid>
 
-            {/* Empty State */}
             {stocks.length === 0 && (
                 <Box sx={{ mt: 4, textAlign: 'center' }}>
                     <Typography variant="h6" color="text.secondary">

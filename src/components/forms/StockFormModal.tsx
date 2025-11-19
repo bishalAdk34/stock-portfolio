@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import {
     Dialog,
     DialogTitle,
@@ -8,6 +9,8 @@ import {
     Box,
     Grid,
 } from '@mui/material';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import dayjs, { Dayjs } from 'dayjs';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { stockFormSchema, type StockFormInput } from '../../schemas/stockSchema';
@@ -53,6 +56,28 @@ export const StockFormModal: React.FC<StockFormModalProps> = ({
                   dateOfPurchase: new Date().toISOString().split('T')[0],
               },
     });
+
+    useEffect(() => {
+        reset(
+            stock
+                ? {
+                      ticker: stock.ticker,
+                      companyName: stock.companyName,
+                      quantity: stock.quantity,
+                      purchasePrice: stock.purchasePrice,
+                      currentPrice: stock.currentPrice,
+                      dateOfPurchase: stock.dateOfPurchase,
+                }
+                : {
+                      ticker: '',
+                      companyName: '',
+                      quantity: 1,
+                      purchasePrice: 0,
+                      currentPrice: undefined,
+                      dateOfPurchase: new Date().toISOString().split('T')[0],
+                  }
+        );
+    }, [stock, mode, reset]);
 
     const handleFormSubmit = (data: StockFormInput) => {
         onSubmit(data as StockFormData);
@@ -131,15 +156,22 @@ export const StockFormModal: React.FC<StockFormModalProps> = ({
                                 <Controller
                                     name="dateOfPurchase"
                                     control={control}
-                                    render={({ field }) => (
-                                        <TextField
+                                    render={({ field: { onChange, value, ...field } }) => (
+                                        <DatePicker
                                             {...field}
                                             label="Date of Purchase"
-                                            type="date"
-                                            fullWidth
-                                            error={!!errors.dateOfPurchase}
-                                            helperText={errors.dateOfPurchase?.message}
-                                            InputLabelProps={{ shrink: true }}
+                                            value={value ? dayjs(value) : null}
+                                            onChange={(newValue: Dayjs | null) => {
+                                                onChange(newValue ? newValue.format('YYYY-MM-DD') : '');
+                                            }}
+                                            maxDate={dayjs()}
+                                            slotProps={{
+                                                textField: {
+                                                    fullWidth: true,
+                                                    error: !!errors.dateOfPurchase,
+                                                    helperText: errors.dateOfPurchase?.message,
+                                                },
+                                            }}
                                         />
                                     )}
                                 />
